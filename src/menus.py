@@ -69,6 +69,8 @@ def get_player_name(window):
     text = ''
     font = pygame.font.SysFont("Minecraft", 32)
     label = font.render('Ingrese su nombre', True, (255, 255, 255))  # Nuevo: crea la etiqueta de texto
+    label_width = label.get_width()  # Nuevo: obtén el ancho de la etiqueta de texto
+    label_x = (WIDTH - label_width) / 2  # Nuevo: calcula la posición x de la etiqueta de texto
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -89,7 +91,7 @@ def get_player_name(window):
                         text += event.unicode
 
         window.fill((30, 30, 30))
-        window.blit(label, (x, y - 40))  # Nuevo: dibuja la etiqueta de texto en la ventana
+        window.blit(label, (label_x, y - 40))  # Modificado: dibuja la etiqueta de texto en la ventana
         txt_surface = font.render(text, True, color)
         window.blit(txt_surface, (input_box.x+5, input_box.y+5))
         pygame.draw.rect(window, color, input_box, 2)
@@ -333,6 +335,10 @@ def show_scores(window, level):
     # Filtrar las puntuaciones para el nivel seleccionado
     scores = [score for score in scores if score['level'] == level]
 
+    # Ordenar las puntuaciones por tiempo y tomar las primeras 3
+    scores.sort(key=lambda score: score['time'])
+    scores = scores[:3]
+
     button_width = 200
     button_height = 50
     padding = 20  # Espacio entre los botones
@@ -353,15 +359,22 @@ def show_scores(window, level):
                     return
 
         # Mostrar las puntuaciones
-        font = pygame.font.SysFont("Minecraft", 25)  # Elige la fuente que prefieras
+        font = pygame.font.SysFont("Minecraft", 30)  # Elige la fuente que prefieras
+        title = font.render("Best scores", True, (255, 255, 255), BLACK)  # Nuevo: crea la etiqueta del título
+        title_width = title.get_width()  # Nuevo: obtén el ancho del título
+        title_x = (WIDTH - title_width) / 2  # Nuevo: calcula la posición x del título para centrarlo
+        title_y = (HEIGHT - len(scores) * 30) / 2 - 40  # Nuevo: calcula la posición y del título
+        window.blit(title, (title_x, title_y))  # Nuevo: dibuja el título en la ventana
         for i, score in enumerate(scores):
             score_text = f"Player = {score['player']}, Puntuacion = {score['score']}, Tiempo = {score['time']}"
             label = font.render(score_text, True, (255, 255, 255), BLACK)  # Crea una etiqueta de texto
             text_width, text_height = font.size(score_text)  # Obtiene el ancho y alto del texto
             text_x = (WIDTH - text_width) / 2  # Calcula la posición x del texto para centrarlo
-            window.blit(label, (text_x, 70 + i*30))  # Dibuja la etiqueta en la ventana
+            text_y = (HEIGHT - len(scores) * text_height) / 2 + i * text_height  # Nuevo: calcula la posición y del texto para centrarlo
+            window.blit(label, (text_x, text_y))  # Modificado: dibuja la etiqueta en la ventana
 
         back_button.draw(window)  # Dibuja el botón "Atrás"
 
         pygame.display.update()
+
 
