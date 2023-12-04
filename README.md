@@ -34,7 +34,7 @@ Ejecuta el juego utilizando el siguiente comando en tu terminal:
 - **Varios niveles para explorar**
 - **Enemigos desafiantes, incluyendo un jefe final**
 - **Sistema de puntuación basado en la recolección de monedas**
-- **Aumento de Dificultad:** El juego se vuelve más desafiante con el tiempo.
+- **Aumento de Dificultad: El juego se vuelve más desafiante con el tiempo**
 
 ## Contribución
 
