@@ -4,7 +4,7 @@
 
 ## Video de Gameplay
 
-[![Defend Your Turf Gameplay](https://img.youtube.com/vi/byXjDqmJozc/0.jpg)](https://youtu.be/byXjDqmJozc)
+[![Sky Runner Gameplay](https://img.youtube.com/vi/SBz8_hA5Buc/0.jpg)](https://youtu.be/SBz8_hA5Buc)
 
 ## Instalación
 
