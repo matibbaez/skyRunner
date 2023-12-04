@@ -2,6 +2,7 @@ import pygame
 from os import listdir
 from os.path import isfile, join
 from constants import *
+from sounds import *
 
 def handle_vertical_collision(player, objects, dy):
     collided_objects = []

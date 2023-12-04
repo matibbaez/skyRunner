@@ -7,8 +7,10 @@ from enemies import *
 from button import *
 from coins import *
 from menus import main_menu
+from sounds import *
 
 pygame.init()
+pygame.mixer.init()
 
 pygame.display.set_caption("Sky Runner")
 pygame.display.set_icon(pygame.image.load("./src/assets/icons/iconsky.png"))

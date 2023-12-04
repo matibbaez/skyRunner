@@ -17,3 +17,13 @@ YELLOW = (255, 242, 0)
 BLACK = (0, 0, 0)
 VIOLETA = (191, 37, 214)
 SKY = (53, 168, 223)
+GRAY = (128, 128, 128)
+DARK_GRAY = (64, 64, 64)
+
+button_width = 200
+button_height = 50
+padding = 20  # Espacio entre los botones
+total_width = 4 * button_width + 3 * padding
+start_x = (WIDTH - total_width) / 2
+back_button_x = start_x + 3 * button_width + 3 * padding
+button_y = HEIGHT - button_height - padding

@@ -7,25 +7,25 @@ from enemies import Enemy
 from obstacle import Obstacle
 from constants import *
 from boss import Boss
+import os
 import json
 
 block_size = 96
-floor = [Block(i * block_size, HEIGHT - block_size, block_size) for i in range(-WIDTH // block_size, WIDTH * 2 // block_size)]
+terrain = "terrain3"
+floor = [Block(i * block_size, HEIGHT - block_size, block_size, terrain) for i in range(-WIDTH // block_size, WIDTH * 2 // block_size)]
 
 def main_menu(window):
     button_width = 200
     button_height = 50
-    padding = 20  # Espacio entre los botones
+    padding = 20  
 
-    # Calcula las coordenadas x para cada botón
-    total_width = 4 * button_width + 3 * padding  # Aumenta el total_width para incluir el nuevo botón
+    total_width = 4 * button_width + 3 * padding 
     start_x = (WIDTH - total_width) / 2
     play_button_x = start_x
     instructions_button_x = start_x + button_width + padding
-    score_button_x = start_x + 2 * button_width + 2 * padding  # Añade un nuevo botón aquí
-    quit_button_x = start_x + 3 * button_width + 3 * padding  # Actualiza la posición del botón de salir
+    score_button_x = start_x + 2 * button_width + 2 * padding 
+    quit_button_x = start_x + 3 * button_width + 3 * padding  
 
-    # Las coordenadas y son las mismas para todos los botones
     button_y = HEIGHT - button_height - padding
 
     play_button = Button("Jugar", play_button_x, button_y, button_width, button_height, WHITE, SKY, action=level_menu)
@@ -105,21 +105,23 @@ def start_level1(window):
         Enemy(750, 610, 50, 50, ("Characters", "Enemy", 48, 48, True)),
         Enemy(150, 610, 50, 50, ("Characters", "Enemy", 48, 48, True))
     )
+    
+    terrain = "terrain2"  # Elige el terreno para este nivel
     objects_level_1 = [*floor, 
-                   Block(block_size * 2, HEIGHT - block_size * 3, block_size), 
-                   Block(block_size * 3, HEIGHT - block_size * 3, block_size), 
-                   Block(block_size * 4, HEIGHT - block_size * 3, block_size), 
-                   Block(block_size * 5, HEIGHT - block_size * 3, block_size),
+                   Block(block_size * 2, HEIGHT - block_size * 3, block_size, terrain), 
+                   Block(block_size * 3, HEIGHT - block_size * 3, block_size, terrain), 
+                   Block(block_size * 4, HEIGHT - block_size * 3, block_size, terrain), 
+                   Block(block_size * 5, HEIGHT - block_size * 3, block_size, terrain),
                    
-                   Block(block_size * 6.4, HEIGHT - block_size * 5, block_size),
-                   Block(block_size * 7.4, HEIGHT - block_size * 5, block_size),
-                   Block(block_size * 8.4, HEIGHT - block_size * 5, block_size),
-                   Block(block_size * 9.4, HEIGHT - block_size * 5, block_size),
+                   Block(block_size * 6.4, HEIGHT - block_size * 5, block_size, terrain),
+                   Block(block_size * 7.4, HEIGHT - block_size * 5, block_size, terrain),
+                   Block(block_size * 8.4, HEIGHT - block_size * 5, block_size, terrain),
+                   Block(block_size * 9.4, HEIGHT - block_size * 5, block_size, terrain),
                     
-                   Block(block_size * 0, HEIGHT - block_size * 6.5, block_size), 
-                   Block(block_size, HEIGHT - block_size * 6.5, block_size), 
-                   Block(block_size * 2, HEIGHT - block_size * 6.5, block_size), 
-                   Block(block_size * 3, HEIGHT - block_size * 6.5, block_size),]
+                   Block(block_size * 0, HEIGHT - block_size * 6.5, block_size, terrain), 
+                   Block(block_size, HEIGHT - block_size * 6.5, block_size, terrain), 
+                   Block(block_size * 2, HEIGHT - block_size * 6.5, block_size, terrain), 
+                   Block(block_size * 3, HEIGHT - block_size * 6.5, block_size, terrain),]
 
     # Crear el nivel con los corazones
     level_1_final = Level(window, pause_menu, game_over_menu, enemies_level_1, objects_level_1, floor, "Citysky.png", max_score=4, level_number=1, player_name=player_name)
@@ -139,21 +141,22 @@ def start_level2(window):
     Enemy(300, 610, 50, 50, ("Characters", "Enemy2", 48, 48, True))
     )
     
+    terrain = "terrain1"
     objects_level_2 = [*floor, 
-               Block(block_size * 4, HEIGHT - block_size * 3, block_size), 
-               Block(block_size * 5, HEIGHT - block_size * 3, block_size), 
-               Block(block_size * 6, HEIGHT - block_size * 3, block_size), 
-               Block(block_size * 7, HEIGHT - block_size * 3, block_size),
+               Block(block_size * 4, HEIGHT - block_size * 3, block_size, terrain), 
+               Block(block_size * 5, HEIGHT - block_size * 3, block_size, terrain), 
+               Block(block_size * 6, HEIGHT - block_size * 3, block_size, terrain), 
+               Block(block_size * 7, HEIGHT - block_size * 3, block_size, terrain),
                
-               Block(block_size * 5.4, HEIGHT - block_size * 7, block_size),
-               Block(block_size * 6.4, HEIGHT - block_size * 7, block_size),
-               Block(block_size * 7.4, HEIGHT - block_size * 7, block_size),
-               Block(block_size * 8.4, HEIGHT - block_size * 7, block_size),
+               Block(block_size * 5.4, HEIGHT - block_size * 7, block_size, terrain),
+               Block(block_size * 6.4, HEIGHT - block_size * 7, block_size, terrain),
+               Block(block_size * 7.4, HEIGHT - block_size * 7, block_size, terrain),
+               Block(block_size * 8.4, HEIGHT - block_size * 7, block_size, terrain),
                 
-               Block(block_size * 4.5, HEIGHT - block_size * 5, block_size), 
-               Block(block_size * 1.5, HEIGHT - block_size * 5, block_size), 
-               Block(block_size * 3.5, HEIGHT - block_size * 5, block_size), 
-               Block(block_size * 2.5, HEIGHT - block_size * 5, block_size),]
+               Block(block_size * 4.5, HEIGHT - block_size * 5, block_size, terrain), 
+               Block(block_size * 1.5, HEIGHT - block_size * 5, block_size, terrain), 
+               Block(block_size * 3.5, HEIGHT - block_size * 5, block_size, terrain), 
+               Block(block_size * 2.5, HEIGHT - block_size * 5, block_size, terrain),]
     
     level_2_final = Level(window, pause_menu, game_over_menu, enemies_level_2, objects_level_2, floor, "Citypink.png", max_score=5, level_number=2, player_name=player_name)
     
@@ -161,7 +164,7 @@ def start_level2(window):
     
 def start_level3(window):
     player_name = get_player_name(window)
-    boss = Boss(800, 225, 50, 50, ("Characters", "Boss", 100, 100, True))
+    boss = Boss(650, 225, 50, 50, ("Characters", "Boss", 100, 100, True))
     
     enemies_level_3 = pygame.sprite.Group(boss,
     Enemy(350, 417, 50, 50, ("Characters", "Enemy2", 48, 48, True)),
@@ -172,24 +175,25 @@ def start_level3(window):
     Enemy(200, 417, 50, 50, ("Characters", "Enemy", 48, 48, True))
     )
     
+    terrain = "terrain2"
     objects_level_3 = [*floor, 
-               Block(block_size * 0, HEIGHT - block_size * 3, block_size), 
-               Block(block_size * 1, HEIGHT - block_size * 3, block_size), 
-               Block(block_size * 2, HEIGHT - block_size * 3, block_size), 
-               Block(block_size * 3, HEIGHT - block_size * 3, block_size),
-               Block(block_size * 4, HEIGHT - block_size * 3, block_size),
-               Block(block_size * 5, HEIGHT - block_size * 3, block_size),
+               Block(block_size * 0, HEIGHT - block_size * 3, block_size, terrain), 
+               Block(block_size * 1, HEIGHT - block_size * 3, block_size, terrain), 
+               Block(block_size * 2, HEIGHT - block_size * 3, block_size, terrain), 
+               Block(block_size * 3, HEIGHT - block_size * 3, block_size, terrain),
+               Block(block_size * 4, HEIGHT - block_size * 3, block_size, terrain),
+               Block(block_size * 5, HEIGHT - block_size * 3, block_size, terrain),
                
-               Block(block_size * 0, HEIGHT - block_size * 7, block_size),
-               Block(block_size * 1, HEIGHT - block_size * 7, block_size),
-               Block(block_size * 2, HEIGHT - block_size * 7, block_size),
-               Block(block_size * 3, HEIGHT - block_size * 7, block_size),
+               Block(block_size * 0, HEIGHT - block_size * 7, block_size, terrain),
+               Block(block_size * 1, HEIGHT - block_size * 7, block_size, terrain),
+               Block(block_size * 2, HEIGHT - block_size * 7, block_size, terrain),
+               Block(block_size * 3, HEIGHT - block_size * 7, block_size, terrain),
                 
-               Block(block_size * 0, HEIGHT - block_size * 5, block_size), 
-               Block(block_size * 1, HEIGHT - block_size * 5, block_size), 
-               Block(block_size * 2, HEIGHT - block_size * 5, block_size), 
-               Block(block_size * 3, HEIGHT - block_size * 5, block_size),
-               Block(block_size * 4, HEIGHT - block_size * 5, block_size),]
+               Block(block_size * 0, HEIGHT - block_size * 5, block_size, terrain), 
+               Block(block_size * 1, HEIGHT - block_size * 5, block_size, terrain), 
+               Block(block_size * 2, HEIGHT - block_size * 5, block_size, terrain), 
+               Block(block_size * 3, HEIGHT - block_size * 5, block_size, terrain),
+               Block(block_size * 4, HEIGHT - block_size * 5, block_size, terrain),]
     
     level_3_final = Level(window, pause_menu, game_over_menu, enemies_level_3, objects_level_3, floor, "Cityorange.png", max_score=11, level_number=3, player_name=player_name)
     
@@ -212,8 +216,25 @@ def level_menu(window):
     button_y = HEIGHT - button_height - padding
 
     level1_button = Button("Nivel 1", level1_button_x, button_y, button_width, button_height, WHITE, SKY, action=start_level1)
-    level2_button = Button("Nivel 2", level2_button_x, button_y, button_width, button_height, WHITE, SKY, action=start_level2)
-    level3_button = Button("Nivel 3", level3_button_x, button_y, button_width, button_height, WHITE, SKY, action=start_level3)
+    if os.path.exists('scores.json'):
+        with open('scores.json', 'r') as f:
+            scores = json.load(f)
+    else:
+        scores = []
+
+    # Verifica si existen datos para los niveles 1 y 2
+    level1_completed = False
+    level2_completed = False
+
+    for score in scores:
+        if score['level'] == 1:
+            level1_completed = True
+        elif score['level'] == 2:
+            level2_completed = True
+            
+    # Habilita los botones de los niveles 2 y 3 solo si se completaron los niveles anteriores
+    level2_button = Button("Nivel 2", level2_button_x, button_y, button_width, button_height, WHITE if level1_completed else GRAY, SKY if level1_completed else DARK_GRAY, action=start_level2 if level1_completed else None)
+    level3_button = Button("Nivel 3", level3_button_x, button_y, button_width, button_height, WHITE if level2_completed else GRAY, SKY if level2_completed else DARK_GRAY, action=start_level3 if level2_completed else None)
     back_button = Button("Atras", back_button_x, button_y, button_width, button_height, (255, 0, 0), (128, 0, 0), action=main_menu)
 
     buttons = [level1_button, level2_button, level3_button, back_button]
@@ -270,19 +291,9 @@ def make_action(level):
     return lambda window: show_scores(window, level)
         
 def score_menu(window):
-    button_width = 200
-    button_height = 50
-    padding = 20  # Espacio entre los botones
-    total_width = 4 * button_width + 3 * padding
-    start_x = (WIDTH - total_width) / 2
-    back_button_x = start_x + 3 * button_width + 3 * padding
-    button_y = HEIGHT - button_height - padding
-    
-    # Leer las puntuaciones del archivo JSON
     with open('scores.json', 'r') as f:
         scores = json.load(f)
 
-    # Agrupar las puntuaciones por nivel
     scores_by_level = {}
     for score in scores:
         level = score['level']
@@ -290,7 +301,6 @@ def score_menu(window):
             scores_by_level[level] = []
         scores_by_level[level].append(score)
 
-    # Crear un botón para cada nivel
     buttons = []
     sorted_levels = sorted(scores_by_level.keys(), key=int)
 
@@ -328,24 +338,14 @@ def score_menu(window):
         pygame.display.update() 
 
 def show_scores(window, level):
-    # Leer las puntuaciones del archivo JSON
     with open('scores.json', 'r') as f:
         scores = json.load(f)
 
-    # Filtrar las puntuaciones para el nivel seleccionado
     scores = [score for score in scores if score['level'] == level]
 
-    # Ordenar las puntuaciones por tiempo y tomar las primeras 3
     scores.sort(key=lambda score: score['time'])
     scores = scores[:3]
 
-    button_width = 200
-    button_height = 50
-    padding = 20  # Espacio entre los botones
-    total_width = 4 * button_width + 3 * padding
-    start_x = (WIDTH - total_width) / 2
-    back_button_x = start_x + 3 * button_width + 3 * padding
-    button_y = HEIGHT - button_height - padding
     back_button = Button("Atras", back_button_x, button_y, button_width, button_height, (255, 0, 0), (128, 0, 0), action=lambda: score_menu(window))
 
     running = True

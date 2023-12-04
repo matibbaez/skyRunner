@@ -4,6 +4,7 @@ from laser import Laser
 from os import listdir
 from os.path import isfile, join
 from constants import *
+from boss import Boss
 
 class Player(pygame.sprite.Sprite):
     COLOR = (255, 0, 0)
@@ -60,12 +61,20 @@ class Player(pygame.sprite.Sprite):
 
     def update_lasers(self, enemies, coins):
         self.lasers.update()
-        collisions = pygame.sprite.groupcollide(self.lasers, enemies, True, True)
-
-        for laser, hit_enemies in collisions.items():
+        hits = pygame.sprite.groupcollide(self.lasers, enemies, True, False)
+        
+        for laser, hit_enemies in hits.items():
             for enemy in hit_enemies:
-                coin = Coin(enemy.rect.centerx, enemy.rect.centery)
-                coins.add(coin)
+                if isinstance(enemy, Boss):  # Si el enemigo es un jefe
+                    enemy.lives -= 1  # Reduce las vidas del jefe
+                    if enemy.lives <= 0 and enemy.dead:  # Si el jefe no tiene vidas
+                        enemies.remove(enemy)  # Elimina al jefe
+                        coin = Coin(enemy.rect.centerx, enemy.rect.centery)  # Crea un nuevo coin
+                        coins.add(coin) 
+                else:  # Si el enemigo es un enemigo común
+                    enemies.remove(enemy)  # Elimina al enemigo
+                    coin = Coin(enemy.rect.centerx, enemy.rect.centery)  # Crea un nuevo coin
+                    coins.add(coin) 
 
     def draw_lasers(self, win):
         self.lasers.draw(win)

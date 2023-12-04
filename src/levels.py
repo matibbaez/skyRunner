@@ -6,8 +6,9 @@ from player import Player
 from constants import *
 from block import Block
 from functions import *
-from button import Button
+from button import Button, ToggleButton
 from boss import Boss
+from sounds import *
 import os
 
 window = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -36,6 +37,7 @@ class Level:
         self.running = True
 
     def run(self):
+        pygame.mixer.music.play(-1)
         
         enemies_added = False
         
@@ -52,6 +54,11 @@ class Level:
                         self.pause_start = pygame.time.get_ticks()
                         self.pause_menu(self.window)
                         self.total_pause_time += pygame.time.get_ticks() - self.pause_start
+                    if event.key == pygame.K_m:
+                        if pygame.mixer.music.get_busy():  # Si la música está sonando
+                            pygame.mixer.music.stop()  # Detén la música
+                        else:
+                            pygame.mixer.music.play(-1)
                     
             elapsed_time = (pygame.time.get_ticks() - self.start_ticks - self.total_pause_time) / 1000
                     
@@ -62,6 +69,8 @@ class Level:
                 self.player.invulnerable = True
                 self.player.invulnerable_time = pygame.time.get_ticks()
                 if self.player.lives <= 0:
+                    pygame.mixer.music.stop()  # Detén la música de fondo
+                    game_over_sound.play()  # Reproduce el sonido de "game over"
                     self.game_over_menu(self.window)
                     
             for enemy in self.enemies:
@@ -79,8 +88,10 @@ class Level:
             handle_move(self.player, self.objects, self.enemies, self.coins)
             
             self.player.update_lasers(self.enemies, self.coins)
+            
             coin_hits = pygame.sprite.spritecollide(self.player, self.coins, True)
             self.score += len(coin_hits)
+
             if self.score == 6 and not enemies_added:
                 # Añade nuevos enemigos al grupo self.enemies
                 new_enemy1 = Enemy(350, 417, 50, 50, ("Characters", "Enemy", 48, 48, True))
@@ -117,11 +128,19 @@ def quit_game(window = None):
 def pause_menu(window):
     from menus import main_menu
     
+    def mute_music():
+        pygame.mixer.music.stop()
+
+    def unmute_music():
+        pygame.mixer.music.play(-1)
+
+    mute_button = Button("Musica OFF", 400, 300, 200, 50, WHITE, SKY, mute_music)
+    unmute_button = Button("Musica ON", 400, 400, 200, 50, WHITE, SKY, unmute_music)
     continue_button = Button("Continuar", 400, 500, 200, 50, WHITE, SKY, action=resume_game)
     menu_button = Button("Menu", 400, 600, 200, 50, WHITE, SKY, action=main_menu)
     quit_button = Button("Salir", 400, 700, 200, 50, (255, 0, 0), (128, 0, 0), action=quit_game)
 
-    buttons = [continue_button, menu_button, quit_button]
+    buttons = [continue_button, menu_button, quit_button, mute_button, unmute_button]
     background_pause = pygame.transform.scale(pygame.image.load("./src/assets/Background/background2.jpg"), size_screen)
 
     running = True
@@ -136,8 +155,9 @@ def pause_menu(window):
                 for button in buttons:
                     if button.rect.collidepoint(event.pos):
                         if button.action:
-                            button.action(window)
-                            running = False
+                            button.action()
+                            if button in [continue_button, menu_button, quit_button]:
+                                running = False
 
         for button in buttons:
             button.is_hovered(pygame.mouse.get_pos())
@@ -162,12 +182,11 @@ def game_over_menu(window):
     # Las coordenadas y son las mismas para todos los botones
     button_y = HEIGHT - button_height - padding
 
-    restart_button = Button("Reiniciar", restart_button_x, button_y, button_width, button_height, WHITE, SKY, action=main_menu)
     back_button = Button("Atras", back_button_x, button_y, button_width, button_height, WHITE, SKY, action=main_menu)
     quit_button = Button("Salir", quit_button_x, button_y, button_width, button_height, (255, 0, 0), (128, 0, 0), action=quit_game)
 
-    buttons = [restart_button, back_button, quit_button]
-    background_menu = pygame.transform.scale(pygame.image.load("./src/assets/Background/lost.jpg"), (WIDTH, HEIGHT))
+    buttons = [back_button, quit_button]
+    background_menu = pygame.transform.scale(pygame.image.load("./src/assets/Background/lostback.jpg"), (WIDTH, HEIGHT))
 
     running = True
     while running:

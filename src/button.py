@@ -23,3 +23,19 @@ class Button:
 
     def is_hovered(self, pos):
         self.hovered = self.rect.collidepoint(pos)
+        
+class ToggleButton(Button):
+    def __init__(self, text1, text2, x, y, width, height, color1, color2, action1, action2):
+        super().__init__(text1, x, y, width, height, color1, color2, action1)
+        self.text1 = text1
+        self.text2 = text2
+        self.action1 = action1
+        self.action2 = action2
+
+    def toggle(self):
+        if self.text == self.text1:
+            self.text = self.text2
+            self.action = self.action2
+        else:
+            self.text = self.text1
+            self.action = self.action1
