@@ -50,4 +50,4 @@ Este proyecto está bajo la Licencia MIT - para más detalles, consulta el archi
 
 ---
 
-¡Diviértete jugando Defend Your Turf! Si tienes alguna pregunta o problema, no dudes en abrir un issue en el repositorio.
+¡Diviértete jugando Sky Runner! Si tienes alguna pregunta o problema, no dudes en abrir un issue en el repositorio.
